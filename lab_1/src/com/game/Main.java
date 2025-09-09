@@ -2,46 +2,76 @@ package com.game;
 
 import com.game.hero.Hero;
 import com.game.strategies.*;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== COMPUTER GAME: STRATEGY PATTERN ===\n");
+        Scanner scanner = new Scanner(System.in);
+        Hero hero = new Hero("Arthur");
 
-        Hero hero = new Hero("Vlad");
-        System.out.println("Hero created: " + hero.getName());
-        System.out.println("Initial movement: " + hero.getCurrentMoveStrategy() + "\n");
+        System.out.println("=== HERO MOVEMENT GAME ===");
+        System.out.println("Hero: " + hero.getName());
 
-        String[] locations = {"Castle", "Forest", "Mountain", "Village", "Cave", "Lake"};
+        while (true) {
+            System.out.println("\nCurrent movement: " + hero.getCurrentMove());
+            System.out.println("Choose action:");
+            System.out.println("1. Move to location");
+            System.out.println("2. Change movement type");
+            System.out.println("3. Exit");
+            System.out.print("Your choice: ");
 
-        demonstrateStrategies(hero, locations);
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // очистка буфера
 
-        System.out.println("\n=== GAME OVER ===");
-    }
+            if (choice == 3) {
+                System.out.println("Game over!");
+                break;
+            }
 
-    private static void demonstrateStrategies(Hero hero, String[] locations) {
-        System.out.println("1. " + hero.getCurrentMoveStrategy() + ":");
-        hero.move(locations[0], locations[1]);
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter start location: ");
+                    String from = scanner.nextLine();
+                    System.out.print("Enter destination: ");
+                    String to = scanner.nextLine();
+                    hero.move(from, to);
+                    break;
 
-        hero.setMoveStrategy(new HorseStrategy());
-        hero.move(locations[1], locations[2]);
+                case 2:
+                    System.out.println("Choose movement type:");
+                    System.out.println("1. Walk");
+                    System.out.println("2. Horse");
+                    System.out.println("3. Fly");
+                    System.out.println("4. Teleport");
+                    System.out.print("Your choice: ");
 
-        hero.setMoveStrategy(new FlyStrategy());
-        hero.move(locations[2], locations[3]);
+                    int moveChoice = scanner.nextInt();
+                    scanner.nextLine(); // очистка буфера
 
-        hero.setMoveStrategy(new TeleportStrategy());
-        hero.move(locations[3], locations[4]);
+                    switch (moveChoice) {
+                        case 1:
+                            hero.setMoveStrategy(new WalkStrategy());
+                            break;
+                        case 2:
+                            hero.setMoveStrategy(new HorseStrategy());
+                            break;
+                        case 3:
+                            hero.setMoveStrategy(new FlyStrategy());
+                            break;
+                        case 4:
+                            hero.setMoveStrategy(new TeleportStrategy());
+                            break;
+                        default:
+                            System.out.println("Invalid choice! Using default walking.");
+                            hero.setMoveStrategy(new WalkStrategy());
+                    }
+                    break;
 
-        hero.setMoveStrategy(new WalkStrategy());
-        hero.move(locations[4], locations[5]);
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        }
 
-        System.out.println("\n--- Dynamic strategy change demo ---");
-        hero.setMoveStrategy(new HorseStrategy());
-        hero.move(locations[5], locations[0]);
-
-        hero.setMoveStrategy(new FlyStrategy());
-        hero.move(locations[0], locations[2]);
-
-        hero.setMoveStrategy(new TeleportStrategy());
-        hero.move(locations[2], locations[4]);
+        scanner.close();
     }
 }

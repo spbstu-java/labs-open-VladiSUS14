@@ -1,6 +1,6 @@
 package com.game.hero;
 
-import com.game.strategies.*;
+import com.game.strategies.WalkStrategy;
 
 public class Hero {
     private String name;
@@ -8,12 +8,16 @@ public class Hero {
 
     public Hero(String name) {
         this.name = name;
-        this.moveStrategy = new WalkStrategy();
+        this.moveStrategy = new WalkStrategy(); // стратегия по умолчанию
     }
 
     public void setMoveStrategy(MoveStrategy moveStrategy) {
-        this.moveStrategy = moveStrategy;
-        System.out.println(name + " it's moving now: " + moveStrategy.getDescription());
+        if (moveStrategy == null) {
+            System.out.println("Error: Strategy cannot be null! Using default walking.");
+            this.moveStrategy = new WalkStrategy();
+        } else {
+            this.moveStrategy = moveStrategy;
+        }
     }
 
     public void move(String from, String to) {
@@ -21,7 +25,7 @@ public class Hero {
         moveStrategy.move(from, to);
     }
 
-    public String getCurrentMoveStrategy() {
+    public String getCurrentMove() {
         return moveStrategy.getDescription();
     }
 

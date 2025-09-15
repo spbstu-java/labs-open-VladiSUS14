@@ -20,8 +20,13 @@ public class Main {
             System.out.println("3. Exit");
             System.out.print("Your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // очистка буфера
+            int choice = 0;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+                continue;
+            }
 
             if (choice == 3) {
                 System.out.println("Game over!");
@@ -45,8 +50,14 @@ public class Main {
                     System.out.println("4. Teleport");
                     System.out.print("Your choice: ");
 
-                    int moveChoice = scanner.nextInt();
-                    scanner.nextLine(); // очистка буфера
+                    int moveChoice = 0;
+                    try {
+                        moveChoice = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input! Using default walking.");
+                        hero.setMoveStrategy(new WalkStrategy());
+                        break;
+                    }
 
                     switch (moveChoice) {
                         case 1:

@@ -1,5 +1,6 @@
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 
 public class MethodInvoker {
 
@@ -8,7 +9,10 @@ public class MethodInvoker {
         Method[] methods = clazz.getDeclaredMethods();
 
         for (Method method : methods) {
-            if (method.isAnnotationPresent(RepeatableMethod.class)) {
+            // Проверяем, что метод аннотирован И является защищённым или приватным
+            if (method.isAnnotationPresent(RepeatableMethod.class) &&
+                    (Modifier.isProtected(method.getModifiers()) || Modifier.isPrivate(method.getModifiers()))) {
+
                 RepeatableMethod annotation = method.getAnnotation(RepeatableMethod.class);
                 int repeatCount = annotation.value();
 

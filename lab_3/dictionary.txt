@@ -1,0 +1,12 @@
+hello | привет
+world | мир
+look | смотреть
+look forward | ожидать
+cat | кот
+window | окно
+good | хороший
+good morning | доброе утро
+see you | увидимся
+computer | компьютер
+program | программа
+java | джава

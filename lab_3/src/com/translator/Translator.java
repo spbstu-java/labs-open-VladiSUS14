@@ -24,10 +24,9 @@ public class Translator {
         dictionary.clear();
         sortedKeys.clear();
 
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(filePath), "UTF-8"));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                new FileInputStream(filePath), "UTF-8"))) {
+
             String line;
             int lineNumber = 0;
 
@@ -67,14 +66,6 @@ public class Translator {
         } catch (IOException e) {
             System.err.println("Error reading file: " + e.getMessage());
             return false;
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    System.err.println("Error closing file: " + e.getMessage());
-                }
-            }
         }
     }
 
